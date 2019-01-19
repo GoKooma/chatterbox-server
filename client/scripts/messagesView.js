@@ -1,63 +1,25 @@
 var MessagesView = {
+
   $chats: $('#chats'),
-  unreadCount: 0,
 
-  initialize: function(data) {
-    // MessagesView.updateMessages(data);
+  initialize: function() {
+    App.messages = new Messages();
+    $('body').on('click', '.username', Friends.toggleStatus);
   },
 
-  render: function() {
-    if (Messages.currentMessages.length) {
-      let start = 0;
-      if (Messages.mostRecentMessageID !== null) {
-        start =
-          Messages.currentMessages.findIndex(
-            msg => msg.objectId === Messages.mostRecentMessageID
-          ) + 1;
+  render: function(message) {
+    //message.text.replace('<', '&lt;');
+    if (message.text) {
+      if (Friends.list[message.username]) {
+        MessagesView.$chats.prepend(
+          `<div class="chat"><div class="username friend">${message.username}</div><div>${message.text}</div></div>`
+        );
+      } else {
+        MessagesView.$chats.prepend(
+          `<div class="chat"><div class="username">${message.username}</div><div>${message.text}</div></div>`
+        );
       }
-      let newMessageCount = 0;
-      console.log(Messages.currentMessages);
-      console.log(start);
-      console.log(Messages.currentMessages[start]);
-      for (let i = start; i < Messages.currentMessages.length; i++) {
-        MessagesView.renderMessage(Messages.currentMessages[i]);
-        newMessageCount++;
-      }
-      MessagesView.unreadCount += newMessageCount;
-      Messages.mostRecentMessageID =
-        Messages.currentMessages[Messages.currentMessages.length - 1].objectId;
     }
-  },
-
-  clearMessages: function() {
-    MessagesView.$chats.empty();
-    Messages.mostRecentMessageID = null;
-  },
-
-  isNewMessage: function(targetMessage) {
-    return !Boolean(
-      Messages.allMessages.filter(
-        msg => msg.objectId === targetMessage.objectId
-      ).length
-    );
-  },
-
-  renderMessage: function(message) {
-    let $message = $(MessageView.render(MessagesView.sanitizeMessage(message)));
-    $message.find('.username').on('click', Friends.toggleStatus);
-    MessagesView.$chats.prepend($message);
-  },
-
-  sanitizeMessage: function(dirtyMessage) {
-    let sanitizedMessage = {};
-
-    for (let key in dirtyMessage) {
-      sanitizedMessage[key] = dirtyMessage[key];
-    }
-
-    sanitizedMessage.username = DOMPurify.sanitize(dirtyMessage.username);
-    sanitizedMessage.text = DOMPurify.sanitize(dirtyMessage.text);
-
-    return sanitizedMessage;
   }
+
 };

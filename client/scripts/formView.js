@@ -1,25 +1,29 @@
 var FormView = {
-  $form: $('form'),
 
-  initialize: function(data) {
-    FormView.$form.on('submit', FormView.handleSubmit);
+  $form: $('form'),
+  $message: $('input#message'),
+
+  initialize: function() {
+    //FormView.$form.on('submit', FormView.handleSubmit);
+    $('#submitmessage').click(FormView.handleSubmit);
   },
 
-  handleSubmit: async function(event) {
+  handleSubmit: function(event) {
     // Stop the browser from submitting the form
     event.preventDefault();
-    App.startSpinner();
-    let message = {};
-    message.username = App.username;
-    message.roomname = RoomsView.$select.val();
-    message.text = $('#message').val();
-    await Parse.create(message);
-    $('#message').val('');
-    App.refresh();
+    let msg = {
+      'text': FormView.$message.val(),
+      'username': App.username,
+      'roomname': RoomsView.$select.val()
+    };
+    Parse.create(msg, App.fetch(App.stopSpinner));
+    FormView.$message.val('');
+    console.log('click! message submitted.');
   },
 
   setStatus: function(active) {
     var status = active ? 'true' : null;
     FormView.$form.find('input[type=submit]').attr('disabled', status);
   }
+
 };

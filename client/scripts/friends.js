@@ -1,26 +1,27 @@
 var Friends = {
-  friendList: {},
+  list: {},
 
   toggleStatus: function(event) {
-    let targetFriend = $(event.target).text();
-    if (!Friends.friendList[targetFriend]) {
-      Friends.friendList[targetFriend] = true;
-      let users = Array.from($('#chats').find('.username'));
-      users.forEach(user => {
-        let $user = $(user);
-        if ($user.text() === targetFriend) {
-          $user.addClass('friend');
+    //console.log('clicked friend');
+    let friend = $(event.currentTarget).text();
+    //console.log(friend);
+    if (!Friends.list[friend]) {
+      Friends.list[friend] = true;
+      allPosts = Array.from($('#chats').find('.username'));
+      for (let i = 0; i < allPosts.length; i++) {
+        if ($(allPosts[i]).text() === friend) {
+          $(allPosts[i]).addClass('friend');
         }
-      });
+      }
     } else {
-      Friends.friendList[targetFriend] = false;
-      let users = Array.from($('#chats').find('.username'));
-      users.forEach(user => {
-        let $user = $(user);
-        if ($user.text() === targetFriend) {
-          $user.removeClass('friend');
+      Friends.list[friend] = false;
+      allPosts = Array.from($('#chats').find('.username'));
+      for (let i = 0; i < allPosts.length; i++) {
+        if ($(allPosts[i]).text() === friend) {
+          $(allPosts[i]).removeClass('friend');
         }
-      });
+      }
     }
   }
+
 };

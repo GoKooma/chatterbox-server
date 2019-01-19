@@ -1,7 +1,9 @@
 var Rooms = {
-  roomList: {},
-
-  addRoom: function(roomName) {
-    Rooms.roomList[roomName] = true;
+  list: {},
+  add: function(roomname) {
+    if (!Rooms.list[roomname]) {
+      Rooms.list[roomname] = [];
+      RoomsView.render(roomname);
+    }
   }
 };

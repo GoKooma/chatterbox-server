@@ -1,38 +1,32 @@
 var Parse = {
-  server: `http://127.0.0.1:3000/classes/messages`,
 
-  create: function(message) {
+  server: 'http://127.0.0.1:3000/classes/messages',
+
+  create: function(message, successCB, errorCB = null) {
     // todo: save a message to the server
-    return $.ajax({
-      // This is the url you should use to communicate with the parse API server.
+    $.ajax({
       url: Parse.server,
       type: 'POST',
       data: JSON.stringify(message),
-      contentType: 'application/json'
+      contentType: 'application/json',
+      success: successCB,
+      error: errorCB || function(error) {
+        console.error('chatterbox: Failed to post message', error);
+      }
     });
   },
 
-  readAll: function() {
-    return $.ajax({
+  readAll: function(successCB, errorCB = null) {
+    $.ajax({
       url: Parse.server,
       type: 'GET',
-      data: { order: '-createdAt' },
-      contentType: 'application/json'
-    });
-  },
-
-  readRoom: function(roomname) {
-    if (roomname === 'All Rooms') {
-      return Parse.readAll();
-    }
-    if (roomname === 'New Room...') {
-      return -1;
-    }
-    return $.ajax({
-      url: Parse.server,
-      type: 'GET',
-      data: { order: '-createdAt', where: { roomname } },
-      contentType: 'application/json'
+      //data: { order: '-createdAt' },
+      contentType: 'application/json',
+      success: successCB,
+      error: errorCB || function(error) {
+        console.error('chatterbox: Failed to fetch messages', error);
+      }
     });
   }
+
 };

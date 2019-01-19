@@ -28,16 +28,20 @@
       <div class="spinner"><img src="client/images/spiffygif_46x46.gif"></div>
       <div id="rooms">
         Room:
-        <select></select>
-        <button>Add Room</button>
+        <select name="roomselect" id="roomselect"></select>
+        <button id="addRoom">Add Room</button>
+        <form action="#" id="roomform" class="roomform">
+          <input type="text" name="room" id="room" placeholder="Enter new room name"/>
+          <button id="createRoom" value="Create Room">Create room</button>
+        </form>
       </div>
-      <form action="#" id="send" method="post">
-        <input type="text" name="message" id="message"/>
-        <input type="submit" name="submit" class="submit"/>
+      <form action="#" id="send" method="post" class="messageform">
+        <input type="text" name="message" id="message" placeholder="What would you like to say?"/>
+        <button id="submitmessage" type="submit" name="submit" class="submitmessage">Submit</button>
       </form>
     </div>
     <div id="chats"></div>
-    <script src="client/env/config.js"></script>
+    <!--<script src="client/env/config.js"></script>-->
     <script src="client/scripts/parse.js"></script>
     <script src="client/scripts/rooms.js"></script>
     <script src="client/scripts/friends.js"></script>

@@ -21,18 +21,15 @@ var requestHandler = function(request, response) {
 
   var headers = defaultCorsHeaders;
 
-  headers['Content-Type'] = 'text/plain';
+  headers['Content-Type'] = 'application/json';
 
-  response.writeHead(statusCode, headers);
+  if (request.url === '/classes/messages') {
 
-  if (request.url === "/classes/messages") {
-
-    if (request.method === "GET") {
-      headers['Content-Type'] = 'application/json';
+    if (request.method === 'GET') {
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify({results}));
 
-    } else if (request.method === "POST") {
+    } else if (request.method === 'POST') {
       request.on('data', (chunk) => {
         results.push(JSON.parse(chunk.toString()));
       });
@@ -40,12 +37,15 @@ var requestHandler = function(request, response) {
       statusCode = 201;
       response.writeHead(statusCode, headers);
 
-      response.end("201: Message posted");
+      response.end('201: Message posted');
+    } else if (request.method === 'OPTIONS') {
+      response.writeHead(statusCode, headers);
+      response.end();
     }
 
   } else {
     response.writeHead(404, headers);
-    response.end("404: Page not found");
+    response.end('404: Page not found');
   }
   
 };
