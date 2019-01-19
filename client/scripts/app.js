@@ -23,7 +23,6 @@ var App = {
   fetch: function(callback = ()=>{}) {
     Parse.readAll((data) => {
       // examine the response from the server request:
-      console.log(data);
       $.each(data.results.reverse(), function(i, message) {
         let roomFilter = false;
         let currentRoom = RoomsView.$select.val();
@@ -41,15 +40,9 @@ var App = {
             message.username = DOMPurify.sanitize(message.username);
             message.text = DOMPurify.sanitize(message.text);
             message.roomname = DOMPurify.sanitize(message.roomname);
-            App.messages.addMessage(message.username, message.text, message.roomname);
+            App.messages.addMessage(message.username, message.text, message.roomname, message.objectId);
             MessagesView.render(message);
           }
-          /*
-           *for (let i = 0; i < Friends.list.length; i++) {
-           *  if (Friends.list[i] === message.username) {
-           *  }
-           *}
-           */
         }
       });
       //MessagesView.$chats.find('.username').on('click', Friends.toggleStatus);
