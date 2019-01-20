@@ -23,7 +23,7 @@ var App = {
   fetch: function(callback = ()=>{}) {
     Parse.readAll((data) => {
       // examine the response from the server request:
-      $.each(data.results.reverse(), function(i, message) {
+      $.each(data.results, function(i, message) {
         let roomFilter = false;
         let currentRoom = RoomsView.$select.val();
         if (currentRoom === 'All Rooms') {
